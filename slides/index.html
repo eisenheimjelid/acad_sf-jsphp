@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="es">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Campus Party 5 - </title>
+
+		<meta name="description" content="Seguridad Web con PHP y JS - Campus Party Pit&aacute;goras">
+		<meta name="author" content="Lic David Leon">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/sky.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+		<script>
+			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+				    <section>
+    					<h1>Seguridad en Formularios</h1>
+    					<h3>con PHP y JavaScript</h3>
+    					<p>
+    						<small>De la <a href="http://www.comunidaddephp.org/" title="Comunidad de PHP" target="_blank">Comunidad de PHP</a> / Lic David Le&oacute;n</small>
+    					</p>
+    					<p><img class="logo" src="http://www.comunidaddephp.org/librerias/temas/2012/image/logo.png" title="UPIICSALibre"/></p>
+    				</section>
+    				
+    				<section>
+    				    <p><a href="https://github.com/eisenheimjelid/acad_sf-jsphp" title="Enlace a la presentación" >https://github.com/eisenheimjelid/acad_sf-jsphp</a></p>
+    				</section>
+				</section>
+
+				<section>
+				    <section>
+    					<h2>Lic. David F.León V... Quién?</h2>
+    					<ul>
+    					    <li>Licenciado en Ciencias de la Informática (<b>UPIICSA</b> - 2009)</li>
+    					    <li>5 años de experiencia laboral en Desarrollo de Software</li>
+    					    <li>Integrante de la Comunidad de PHP</li>
+    					    <li>Java, PHP, Ruby, Python, Js, HTML5, CSS3, etc.</li>
+    					    <li>Bases de Datos, AJAX, Seguridad, Rendimiento, Mejores Prácticas, etc.</li>
+    					    <li><a href="http://www.davfl.com.mx" target="_blank">davfl.com.mx</a></li>
+    					    <li><a href="https://twitter.com/jelidleon" target="_blank">@jelidleon</a></li>
+    					</ul>
+    					<aside class="notes">
+    						<li>He participado en muchas comunidades de software libre.</li>
+    						<li>Menciono aquí algunos lenguajes de programación que conozco y domino.</li>
+    						<li>También presumo algunas cosas más que conozco muy bien.</li>
+    						<li>En mi sitio Web encontrarán principalmente noticias, aunque también algunos tutoriales.</li>
+    					</aside>
+    				</section>
+    				
+    				<section>
+    					<h2>Agenda</h2>
+    					<ul>
+    					    <li>Introducci&oacute;n</li>
+    					    <li>Formularios Web</li>
+    					    <li>Problemas t&iacute;picos de Seguridad en Formularios</li>
+    					    <li>Usando Javascript para validar formularios</li>
+    					    <li>Validación en el servidor, integrando ambos m&eacute;todos</li>
+    					    <li>Preguntas & Respuestas</li>
+    					    <p>&nbsp;</p>
+    					    <quote class="quoted">«En algún lugar, algo increíble está esperando ser conocido».<br />Carl Sagan</quote>
+    					</ul>
+    					<aside class="notes">
+    						Referencia gracioso: "El proposito principal de la declaracion DATA es dar nombres a constantes; en vez de referirse a pi como 3.141592653589793 en todos los lugares que aparezca en el programa, se le puede dar dicho valor a una variable llamada PI con una declaracion del tipo DATA, y usar esta variable en lugar del inconvenientemente largo valor de pi. Esto tambien simplifica el modificar posteriormente el programa, en caso de que el valor de pi cambiase. - Manual de FORTRAN para odenadores XEROX.)"a.
+    					<aide>
+    				</section>
+				</section>
+
+                <section>
+                    <section>
+					    <h2>Introducción</h2>
+					    <p>Ingresar datos en Internet, implica el uso de los elementos FORM, INPUT, TEXTAREA, etc... en el código HTML que se carga en cualquier navegador Web. Es decir, si deseas capturar un nombre, correo electrónico, número telefónico o cualquier otro tipo de campo, a través de un sitio web, estas obligado a utilizar los formularios de HTML.</p>
+					    <aside class="notes">
+					        Una aplicación Web es un conjunto de recursos disponibles a través de una Red, generalmente vinculados a través de enlaces de hipertexto.
+					    </aside>
+					</section>
+					
+					<section>
+					    <p>Pero como en todo sistema informático, la capa 8 es el eslabón más débil, hablando de seguridad. Se le debe más tiempo de desarrollo, consideraciones y vigilancia para mitigar riesgos en cada medio que disponemos a la carga o consulta de información; y una sola validación no suele ser suficiente, más cuando esa información que se captura termina en una base de datos.</p>
+					</section>
+				</section>
+				
+				<section>
+    				<section>
+					    <h2>Formularios Web</h2>
+					    <p>Los formularios en Internet se construyen desde una etiqueta base <form> con sus respectivas propiedades, y dentro de la cual se albergan muchos otros elementos, que ya nos brindan la interacción con el usuario: input, textarea, labels, fieldsets, legends, button, select, etc.</p>
+					</section>
+    				<section>
+    				    <h3><a href="http://davfl.com.mx/cpmx5/ejemplo1_cpmx5.php" target="_blank" title="Ejemplo de un Formulario" >Ejemplo de un formulario</a></h3>
+						<p>Al ser la principal herramienta de interacción con los usuarios, los formularios han sido usados y abusados a lo largo de Internet, por lo que el esquema tiene pocas variantes, y todas ellas en pos(T) de la seguridad.</p>
+    				</section>
+				</section>
+				
+				<section>
+				    <section>
+					    <h2>Problemas t&iacute;picos de Seguridad en Formularios</h2>
+					    <ul>
+					        <li>Re-escritura de URL</li>
+					        <li>Inyecci&oacute;n de SQL</li>
+					        <li>Scripting a trav&eacute;s de sitios (XSS)</li>
+					    </ul>
+					</section>
+					<section>
+						<h3>Re-escritura de URL</h3>
+						<a href="http://davfl.com.mx/cpmx5/ejemplo1_cpmx5.php" target="_blank" title="Ejemplo">Ejemplo</a>
+						<p>Es una t&eacute;cnica vieja, pero a&uacute;n vigente en cuanto a hacking y seguridad en Internet. Te permite una gran variedad de ataques, que generen basura o simplemente tr&aacute;fico al sitio Web, todo depende de la v&iacute;ctima.</p>
+					</section>
+					<section>
+						<h3>Inyecci&oacute;n de SQL</h3>
+						<a href="http://davfl.com.mx/cpmx5/ejemplo1_cpmx5.php" target="_blank" title="Ejemplo">Ejemplo</a>
+						<p>A trav&eacute;s de esta t&eacute;cnica, se ingresa c&oacute;digo de SQL en un input normal, vulnerando de esta manera la base de datos.</p>
+					</section>
+					<section>
+						<h3>Scripting a trav&eacute;s de sitios (XSS)</h3>
+						<p>Es una t&eacute;cnica un poco m&aacute;s avanzada, pero bastante difundida entre hacker's y profesionales de la seguridad; la &uacute;nica forma de defenderse es hacer uso de cookies, controles de IP y sesiones de usuario.</p>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>Usando Javascript para validar formularios</h2>
+						<a href="http://jsbin.com/ozeyag/19/edit" target="_blank" title="En pastebin" >Ejemplo</a>
+						<p>Tienes que hacer uso de las Expresiones Regulares, para tener un formulario seguro, debes pensar en que cualquier persona conoce lo que haces y esp&iacute;a tu c&oacute;digo de forma minusciosa. Hacer uso de esta t&eacute;cnica no es una garant&iacute;a de seguridad de ninguna manera... pero sin duda minimiza tus riesgos.</p>
+    				</section>
+    				
+				</section>
+
+				<section>
+					<section>
+						<h2>Validación en el servidor, integrando ambos m&eacute;todos</h2>
+						<a href="http://php.net//manual/es/function.preg-match.php" target="_blank" title="preg_match">Manual de PHP - preg_match</a>
+						<p>Una vez ejecutada la validaci&oacute;n en el cliente, los datos al momento de llegar al servidor tienen que ser nuevamente validados utilizando expresiones regulares... va de nuez, pero con eso evitamos en cierta medida ataques XSS.</p>
+    				</section>
+    				
+				</section>
+				
+				<section>
+					<h2>Dudas?</h2>
+					<img src="img/gaspar.jpg" alt="Gaspar, de los Simpson" title="Hay tabla..." height="39%"/>
+				</section>
+
+				<section>
+					<h1>al fin!</h1>
+					<p>Por Lic David F. Le&oacute;n V.</p>
+					<ul>
+					    <li><a href="https://twitter.com/jelidleon" title="Twitter" target="_blank">@jelidleon</a></li>
+					    <li><a href="http://about.me/jelidleon" title="Acerca de..." target="_blank">about.me/jelidleon</a></li>
+					</ul>
+					<p>&nbsp;</p>
+					<p>Creditos especiales a <a href="https://github.com/hakimel/reveal.js/" target="_blank" title="Reveal.JS">Reveal.JS</a></p>
+				</section>
+
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
