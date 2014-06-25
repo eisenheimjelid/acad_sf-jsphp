@@ -5,6 +5,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	</head>
 	<body>
+		<div><img class="logo" src="http://www.comunidaddephp.org/librerias/temas/2012/image/logo.png" title="Comunidad de PHP"/></div>
 		<div>
 			
 			<form action="ejemplo1_cpmx5.php" method="GET">
